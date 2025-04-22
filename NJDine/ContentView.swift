@@ -5,34 +5,37 @@
 //  Created by Iraniya Naynesh on 21/04/25.
 //
 
+
 import SwiftUI
 
 struct ContentView: View {
-    //let menu = Bundle.main.decode([MenuSection].self, from: "menu.json")
-    
+    let menu = Bundle.main.decode([MenuSection].self, from: "menu.json")
+
     var body: some View {
-        Text("Sample")
-//        NavigationStack {
-//            List {
-//                ForEach(menu) { section in
-//                    Section(section.name) {
-//                        ForEach(section.items) { item in
-//                            NavigationLink(value: item) {
-//                                ItemRow(item: item)
-//                            }
-//                            .navigationDestination(for: MenuItem.self) { item in
-//                                ItemDetail(item: item)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            .navigationTitle("Menu")
-//            .listStyle(.grouped)
-//        }
+        NavigationStack {
+            List {
+                ForEach(menu) { section in
+                    Section(section.name) {
+                        ForEach(section.items) { item in
+                            NavigationLink(value: item) {
+                                ItemRow(item: item)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationDestination(for: MenuItem.self) { item in
+                ItemDetail(item: item)
+            }
+            .navigationTitle("Menu")
+            .listStyle(.grouped)
+        }
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
+

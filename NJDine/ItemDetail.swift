@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ItemDetail: View {
-    let item: MenuItem
+    var item: MenuItem
     @EnvironmentObject var order: Order
     
     var body: some View {
@@ -26,11 +26,23 @@ struct ItemDetail: View {
             }
             Text(item.description)
                 .padding()
-            Button("Order This") {
+            Button {
                 order.add(item: item)
+            } label: {
+                Text("Order")
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 10)
+                    .font(.title)
+                    .background(.red)
+                    .cornerRadius(8)
+                    .foregroundColor(.white)
             }
-            .buttonStyle(.borderedProminent)
             Spacer()
+        }
+        .toolbar {
+            Button("add to Favioute") {
+               print("Favorites")
+            }
         }
         .navigationTitle(item.name)
         .navigationBarTitleDisplayMode(.inline)
