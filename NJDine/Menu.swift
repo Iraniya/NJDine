@@ -20,7 +20,7 @@ struct MenuItem: Codable, Hashable, Identifiable {
     var price: Int
     var restrictions: [String]
     var description: String
-    var isFavourite = false
+    var isFavourite: Bool? = false
 
     var mainImage: String {
         name.replacingOccurrences(of: " ", with: "-").lowercased()
@@ -28,6 +28,28 @@ struct MenuItem: Codable, Hashable, Identifiable {
 
     var thumbnailImage: String {
         "\(mainImage)-thumb"
+    }
+    
+    var attributedDescription: AttributedString {
+        var result = AttributedString(description)
+        result.font = .largeTitle
+        result.foregroundColor = .white
+        result.backgroundColor = .black
+        return result
+    }
+    
+    var dancingMessage: AttributedString {
+        let string = description
+        var restult = AttributedString()
+        
+        for (index, letter) in string.enumerated() {
+            var letterString = AttributedString(String(letter))
+            letterString.baselineOffset = sin(Double(index)) * 5
+            restult += letterString
+        }
+        
+        restult.font = .largeTitle
+        return restult
     }
 
     #if DEBUG

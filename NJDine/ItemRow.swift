@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ItemRow: View {
+class ItemRowViewModel {
     let item: MenuItem
     let colors: [String: Color] = ["D": .purple,
                                    "G": .black,
@@ -15,6 +15,18 @@ struct ItemRow: View {
                                    "S": .blue,
                                    "V": .green]
     
+    init(item: MenuItem) {
+        self.item = item
+    }
+}
+
+struct ItemRow: View {
+    let item: MenuItem
+    let colors: [String: Color] = ["D": .purple,
+                                   "G": .black,
+                                   "N": .red,
+                                   "S": .blue,
+                                   "V": .green]
     var body: some View {
         HStack(alignment: .center) {
             Image(item.thumbnailImage)

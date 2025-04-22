@@ -44,6 +44,7 @@ struct CheckoutView: View {
                 Toggle("Add loyalty card", isOn: $addLoyaltyDetails.animation())
                 if addLoyaltyDetails {
                     TextField("Enter your id",text: $loyaltyNumber)
+                        .privacySensitive()
                 }
             }
             
