@@ -11,11 +11,20 @@ struct SampleView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(0..<10) { i in
-                    Text("Item \(i)")
-                        .foregroundStyle(.white)
-                        .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 10)
-                        .background(.blue)
+                ForEach(1..<20) { num in
+                    VStack {
+                        GeometryReader { geo in
+                            Text("Item \(num)")
+                                .font(.largeTitle)
+                                .padding()
+                                .background(.red)
+                                .foregroundStyle(.white)
+                                .rotation3DEffect(.degrees(-Double(geo.frame(in: .global).minX) / 8), axis: (x: 0, y: 1, z: 0))
+                                .frame(height: 200)
+                                //.containerRelativeFrame(.horizontal, count: 3, span: 1, spacing: 0)
+                        }
+                        .frame(width: 200, height: 200)
+                    }
                 }
             }
         }

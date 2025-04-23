@@ -13,14 +13,37 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(menu) { section in
-                    Section(section.name) {
-                        ForEach(section.items) { item in
-                            NavigationLink(value: item) {
-                                ItemRow(item: item)
+            ScrollViewReader { value in
+                Button("scroll to Strawberry") {
+                    //value.scrollTo("Strawberry Surprise", anchor: .top)
+                    withAnimation {
+                        value.scrollTo("Strawberry Surprise", anchor: .top)
+                    }
+                   
+                }
+                Button("scroll to Drinks") {
+                    print(value)
+                    withAnimation {
+                        value.scrollTo("Drinks", anchor: .top)
+                    }
+                }
+                
+                Button("scroll to Breakfast") {
+                    withAnimation {
+                        value.scrollTo("Breakfast", anchor: .top)
+                    }
+                }
+                List {
+                    ForEach(menu) { section in
+                        Section(section.name) {
+                            ForEach(section.items) { item in
+                                NavigationLink(value: item) {
+                                    ItemRow(item: item)
+                                }
+                                .id(item.name)
                             }
                         }
+                        .id(section.name)
                     }
                 }
             }
