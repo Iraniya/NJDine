@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVKit
 
 class ItemDetailViewModel: ObservableObject {
     @Published var item: MenuItem
@@ -30,7 +31,7 @@ struct ItemDetail: View {
     @State var isLoading = true
     
     var body: some View {
-        VStack {
+        ScrollView {
             detailView
             orderButton
             Spacer()
@@ -103,12 +104,19 @@ struct ItemDetail: View {
                         .font(.subheadline)
                         .fontWeight(.black)
                         .padding(5)
-                        .background(colors[restriction, default: .black])
+                        .background {
+                            colors[restriction, default: .black]
+                        }
                         .clipShape(Circle())
                         .foregroundStyle(.white)
                 }
             }
             .padding()
+            
+            Section("Cooking") {
+                VideoPlayer(player: AVPlayer(url: URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!))
+                    .frame(height: 300)
+            }
         } //VStack end here
     }
     
@@ -117,10 +125,8 @@ struct ItemDetail: View {
             order.add(item: item)
         } label: {
             Text("Order")
-                .padding(.horizontal, 30)
-                .padding(.vertical, 10)
+                .frame(width: 100, height: 40)
                 .background(.red)
-                .font(.title)
                 .cornerRadius(8)
                 .foregroundColor(.white)
         }
