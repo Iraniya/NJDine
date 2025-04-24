@@ -20,6 +20,7 @@ struct ProfileView: View {
         case firstName
         case lastName
     }
+    @AppStorage("name") var name = "First Name"
     
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
@@ -34,11 +35,13 @@ struct ProfileView: View {
     
     @State private var birthDate: Date = .now
     
+    @State private var bioText = "Enter your bio"
+    
     let genderType: [Gender] = [.male, .female, .other]
     
     var formView: some View {
         Form {
-            TextField("First Name", text: $firstName)
+            TextField(name, text: $firstName)
                 .focused($focusedField, equals: .firstName)
             
             TextField("Last Name", text: $lastName)
@@ -94,7 +97,8 @@ struct ProfileView: View {
             
             formView
             genderView
-            birthDateView
+            //birthDateView
+            bioTextView
             Spacer()
         }
         .onChange(of: avatarItem) {
@@ -159,6 +163,13 @@ struct ProfileView: View {
             //                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(height: 50)
+    }
+    
+    var bioTextView: some View {
+        TextEditor(text: $bioText)
+            .foregroundStyle(.blue)
+            .padding(.horizontal)
+            .background(.red)
     }
 }
 

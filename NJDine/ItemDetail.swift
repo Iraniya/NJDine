@@ -27,6 +27,7 @@ struct ItemDetail: View {
     @State private var ingreidients = ["Egg", "Sausage", "Bacon", "Spam"]
     
     @EnvironmentObject var order: Order
+    @Environment(\.openURL) var openURL
     
     @State var isLoading = true
     
@@ -93,9 +94,7 @@ struct ItemDetail: View {
             .padding(.leading, 10)
             
             Section {
-                Link("Website", destination: URL(string: "https://github.com/Iraniya/NJDine")!)
-                Text("https://github.com/Iraniya/NJDine")
-                    .tint(.indigo)
+                websiteView
             }
             
             HStack {
@@ -123,22 +122,48 @@ struct ItemDetail: View {
     @State var quantity = 1
     
     var orderButton: some View {
-        Button {
-            order.add(item: item)
-        } label: {
-            Stepper("Quantity : \(quantity)", onIncrement: {
-                quantity = quantity + 1 > 10 ? 10 : quantity + 1
-            }, onDecrement: {
-                quantity = quantity - 1 < 0 ? 0 : quantity - 1
-            })
-            .tint(.red)
-            Text("Order")
-                .frame(width: 100, height: 40)
-                .background(.red)
-                .cornerRadius(8)
-                .foregroundColor(.white)
+        VStack {
+            HStack {
+                Text("\(quantity)")
+                Stepper("Quantity : \(quantity)", onIncrement: {
+                    quantity = quantity + 1 > 10 ? 10 : quantity + 1
+                }, onDecrement: {
+                    quantity = quantity - 1 < 0 ? 0 : quantity - 1
+                })
+                .labelsHidden()
+                .tint(.red)
+            }
+            
+            Button {
+                order.add(item: item)
+            } label: {
+                Text("Order")
+                    .frame(width: 100, height: 40)
+                    .background(.red)
+                    .cornerRadius(8)
+                    .foregroundColor(.white)
+            }
         }
         .padding()
+    }
+    
+    var websiteView: some View {
+        Group {
+            Link(destination: URL(string: "https://github.com/Iraniya/NJDine")!) {
+                Image(systemName: "link.circle.fill")
+                    .font(.largeTitle)
+                    .padding(.leading, 10)
+            }
+            
+            Text("https://github.com/Iraniya/NJDine")
+                .tint(.indigo)
+                .padding(.leading, 10)
+            
+            Button("Open url") {
+                openURL(URL(string: "https://github.com/Iraniya/NJDine")!)
+            }
+            .padding(.leading, 10)
+        }
     }
     
     func handleURL(_ url: URL) -> OpenURLAction.Result {
