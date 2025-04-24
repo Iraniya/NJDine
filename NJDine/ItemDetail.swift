@@ -120,16 +120,25 @@ struct ItemDetail: View {
         } //VStack end here
     }
     
+    @State var quantity = 1
+    
     var orderButton: some View {
         Button {
             order.add(item: item)
         } label: {
+            Stepper("Quantity : \(quantity)", onIncrement: {
+                quantity = quantity + 1 > 10 ? 10 : quantity + 1
+            }, onDecrement: {
+                quantity = quantity - 1 < 0 ? 0 : quantity - 1
+            })
+            .tint(.red)
             Text("Order")
                 .frame(width: 100, height: 40)
                 .background(.red)
                 .cornerRadius(8)
                 .foregroundColor(.white)
         }
+        .padding()
     }
     
     func handleURL(_ url: URL) -> OpenURLAction.Result {

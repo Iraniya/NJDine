@@ -12,7 +12,7 @@ class Order: ObservableObject {
     
     var total: Int {
         if items.count > 0 {
-            return items.reduce(0) { $0 + $1.price }
+            return items.reduce(0) { $0 + ($1.price * ($1.quantity ?? 1)) }
         } else {
             return 0
         }

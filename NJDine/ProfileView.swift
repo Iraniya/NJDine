@@ -8,16 +8,46 @@
 import SwiftUI
 import PhotosUI
 
+enum Gender: String {
+    case male = "Male"
+    case female = "Female"
+    case other = "Other"
+}
+
 struct ProfileView: View {
     
+    enum FocusedField {
+        case firstName
+        case lastName
+    }
+    
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    @State private var firstName = ""
+    @State private var lastName = ""
+    @FocusState private var focusedField: FocusedField?
     
     @State private var avatarItem: PhotosPickerItem?
     @State private var avatarImage: Image?
     
-    var body: some View {
-        VStack(alignment: .leading) {
+    @State private var selectedGender: Gender = .male
+    
+    @State private var birthDate: Date = .now
+    
+    let genderType: [Gender] = [.male, .female, .other]
+    
+    var formView: some View {
+        Form {
+            TextField("First Name", text: $firstName)
+                .focused($focusedField, equals: .firstName)
             
+            TextField("Last Name", text: $lastName)
+                .focused($focusedField, equals: .lastName)
+        }
+    }
+    
+    var body: some View {
+        ScrollView {
             PhotosPicker("Edit Avatar", selection: $avatarItem, matching: .images)
                 .frame(minWidth: 0, maxWidth: 200, minHeight: 0, maxHeight: 200)
                 .font(.largeTitle)
@@ -52,7 +82,7 @@ struct ProfileView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(.red)
-
+                
                 Text("This is a This is a This is a")
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -62,39 +92,9 @@ struct ProfileView: View {
             .frame(maxWidth: 400)
             .background(.blue)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 0) {
-                    Text("Post")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 100)
-                        //.background(.blue)
-                        .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
-                    Divider()
-                        .frame(width:2,height: 50)
-                        .background(.black)
-                    Text("followers")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 100)
-                        //.background(.green)
-                        .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
-                    Divider()
-                    Text("Following")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 100)
-                        //.background(.red)
-                        .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
-                    Divider()
-                    Text("Following")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 100)
-                        .background(.red)
-                        .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
-                }
-//                .fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(height: 100)
-            
-            
+            formView
+            genderView
+            birthDateView
             Spacer()
         }
         .onChange(of: avatarItem) {
@@ -107,6 +107,58 @@ struct ProfileView: View {
             }
         }
         .padding()
+        .onAppear {
+            focusedField = .firstName
+        }
+    }
+    
+    var genderView: some View {
+        Picker("Select your gender", selection: $selectedGender) {
+            ForEach(genderType, id: \.self) {
+                Text("\($0.rawValue)")
+            }
+        }
+        .pickerStyle(.segmented)
+    }
+    
+    var birthDateView: some View {
+        DatePicker("Entet your birthday", selection: $birthDate, in: ...Date.now, displayedComponents: .date)
+            .datePickerStyle(GraphicalDatePickerStyle())
+            .frame(maxHeight: 300)
+    }
+    
+    var relavtiveScrollView: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 0) {
+                Text("Post")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 100)
+                //.background(.blue)
+                    .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
+                Divider()
+                    .frame(width:2,height: 50)
+                    .background(.black)
+                Text("followers")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 100)
+                //.background(.green)
+                    .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
+                Divider()
+                Text("Following")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 100)
+                //.background(.red)
+                    .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
+                Divider()
+                Text("Following")
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 100)
+                    .background(.red)
+                    .containerRelativeFrame(.horizontal, count: 5, span: 2, spacing: 0)
+            }
+            //                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(height: 50)
     }
 }
 

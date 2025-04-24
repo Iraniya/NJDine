@@ -21,6 +21,7 @@ struct MenuItem: Codable, Hashable, Identifiable {
     var restrictions: [String]
     var description: String
     var isFavourite: Bool? = false
+    var quantity: Int? = 1
 
     var mainImage: String {
         name.replacingOccurrences(of: " ", with: "-").lowercased()
