@@ -26,7 +26,8 @@ struct OrderView: View {
                 
                 Section {
                     NavigationLink("Place order") {
-                        CheckoutView()
+                        CheckoutView(checkoutViewModel: CheckoutViewModel(order))
+                            .environmentObject(order)
                     }
                 }
                 .disabled(order.items.isEmpty)

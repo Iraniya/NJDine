@@ -38,7 +38,7 @@ struct ContentView: View {
                         Section(section.name) {
                             ForEach(section.items) { item in
                                 NavigationLink(value: item) {
-                                    ItemRow(item: item)
+                                    ItemRow(viewModel: ItemRowViewModel(item: item))
                                 }
                                 .id(item.name)
                             }

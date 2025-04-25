@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension Bundle {
     func decode<T: Decodable>(_ type: T.Type, from file: String) -> T {
@@ -26,4 +27,33 @@ extension Bundle {
 
         return loaded
     }
+}
+
+extension Binding {
+    
+    @MainActor
+    func onChange(_ handler: @escaping (Value) -> Void) -> Binding<Value> {
+        Binding(
+            get: {self.wrappedValue },
+            set: { newValue in
+                self.wrappedValue = newValue
+                handler(newValue)
+            }
+        )
+    }
+}
+
+struct SampleBinding: View {
+    @State private var name = ""
+    
+    var body: some View {
+        TextField("Enter your name", text: $name.onChange(nameChange))
+            .textFieldStyle(.roundedBorder)
+        
+    }
+    
+    func nameChange(to value: String) {
+        print("Name change to \(name)")
+    }
+    
 }
