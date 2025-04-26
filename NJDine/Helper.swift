@@ -57,3 +57,29 @@ struct SampleBinding: View {
     }
     
 }
+
+extension EnvironmentValues {
+    @Entry var iconColor: Color = .red
+}
+
+struct BubbleView: View {
+    @Environment(\.iconColor) var iconColor
+    
+    var body : some View {
+        Image(systemName: "bubbles.and.sparkles.fill")
+            .foregroundColor(iconColor)
+            .font(.largeTitle)
+    }
+}
+
+struct SampleEnvironmentView: View {
+    var body: some View {
+        HStack {
+            BubbleView()
+                .environment(\.iconColor, .blue)
+            
+            BubbleView()
+                .environment(\.iconColor, .red)
+        }
+    }
+}
