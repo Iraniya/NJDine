@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MenuListView: View {
     @State var menu = Bundle.main.decode([MenuSection].self, from: "menu.json")
     @State private var searchText: String = ""
     @State private var searchIsActive = false
@@ -114,6 +114,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MenuListView()
     }
 }

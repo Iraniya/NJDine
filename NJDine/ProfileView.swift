@@ -50,69 +50,94 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        ScrollView {
-            PhotosPicker("Edit Avatar", selection: $avatarItem, matching: .images)
-                .frame(minWidth: 0, maxWidth: 200, minHeight: 0, maxHeight: 200)
-                .font(.largeTitle)
-            
-            avatarImage?
-                .resizable()
-                .scaledToFill()
-                .frame(width: 200, height: 200)
-                .clipShape(Circle())
-            
-            GeometryReader { geometry in
-                HStack(spacing: 0) {
-                    Text("Left")
-                        .font(.largeTitle)
-                        .foregroundStyle(.black)
-                        .frame(width: geometry.size.width * 0.5)
-                        .background(.yellow)
-                    
-                    Text("Right")
-                        .font(.largeTitle)
-                        .foregroundStyle(.black)
-                        .frame(width: geometry.size.width * 0.5)
-                        .background(.orange)
-                }
-            }
-            .frame(height: 50)
-            
-            let layout = horizontalSizeClass == .regular ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
-            
-            layout {
-                Text("This is a short string.")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.red)
+        
+        NavigationStack {
+            ScrollView {
+                PhotosPicker("Edit Avatar", selection: $avatarItem, matching: .images)
+                    .frame(minWidth: 0, maxWidth: 200, minHeight: 0, maxHeight: 200)
+                    .font(.largeTitle)
                 
-                Text("This is a This is a This is a")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.green)
-            }
-            .fixedSize(horizontal: true, vertical: false)
-            .frame(maxWidth: 400)
-            .background(.blue)
-            
-            formView
-            genderView
-            //birthDateView
-            bioTextView
-            Spacer()
-        }
-        .onChange(of: avatarItem) {
-            Task {
-                if let loaded = try? await avatarItem?.loadTransferable(type: Image.self) {
-                    avatarImage = loaded
-                } else {
-                    print("Failed")
+                avatarImage?
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 200, height: 200)
+                    .clipShape(Circle())
+                
+                GeometryReader { geometry in
+                    HStack(spacing: 0) {
+                        Text("Left")
+                            .font(.largeTitle)
+                            .foregroundStyle(.black)
+                            .frame(width: geometry.size.width * 0.5)
+                            .background(.yellow)
+                        
+                        Text("Right")
+                            .font(.largeTitle)
+                            .foregroundStyle(.black)
+                            .frame(width: geometry.size.width * 0.5)
+                            .background(.orange)
+                    }
+                }
+                .frame(height: 50)
+                
+                let layout = horizontalSizeClass == .regular ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
+                
+                layout {
+                    Text("This is a short string.")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.red)
+                    
+                    Text("This is a This is a This is a")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.green)
+                }
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(maxWidth: 400)
+                .background(.blue)
+                
+                formView
+                genderView
+                //birthDateView
+                bioTextView
+                Spacer()
+                
+                .navigationTitle("Profile")
+                .toolbar {
+                    ToolbarItemGroup(placement: .primaryAction) {
+                        Button("About") {
+                            print("About tapped")
+                        }
+                        
+                        Button("Help") {
+                            print("Help tapped")
+                        }
+                    }
+                    
+                    ToolbarItemGroup(placement: .secondaryAction) {
+                        Button("settings"){
+                            print("settings taped")
+                        }
+                        Button("Email me") {
+                            print("email tapped")
+                        }
+                    }
                 }
             }
-        }
-        .padding()
-        .onAppear {
-            focusedField = .firstName
+            .onChange(of: avatarItem) {
+                Task {
+                    if let loaded = try? await avatarItem?.loadTransferable(type: Image.self) {
+                        avatarImage = loaded
+                    } else {
+                        print("Failed")
+                    }
+                }
+            }
+            .padding()
+            .onAppear {
+                focusedField = .firstName
+            }
         }
     }
     
