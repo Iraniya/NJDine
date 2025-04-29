@@ -124,6 +124,7 @@ struct ProfileView: View {
                         }
                     }
                 }
+                .buttonStyle(.plain)
             }
             .onChange(of: avatarItem) {
                 Task {
